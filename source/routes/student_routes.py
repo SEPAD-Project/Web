@@ -9,6 +9,7 @@ from flask_login import current_user, login_required
 
 # Internal Application Imports
 from source import db
+from source import cache
 from source.models.models import Student, Class, School
 from source.server_side.Website.directory_manager import dm_create_student, dm_delete_student, dm_edit_student
 from source.utils.excel_reading import add_students
@@ -110,6 +111,7 @@ def add_student():
 
 
 @bp.route('/panel/students/add_from_excel', methods=['GET', 'POST'])
+@cache.cached(timeout=3600)
 @login_required
 def add_from_excel():
     """
@@ -355,6 +357,7 @@ def student_info(student_national_code):
 
 
 @bp.route("/panel/students/unknown_student_info", methods=['GET', 'POST'])
+@cache.cached(timeout=3600)
 @login_required
 def unknown_student_info():
     """
@@ -371,6 +374,7 @@ def unknown_student_info():
 
 
 @bp.route("/panel/students/duplicated_student_info", methods=['GET', 'POST'])
+@cache.cached(timeout=3600)
 @login_required
 def duplicated_student_info():
     """
@@ -404,6 +408,7 @@ def error_in_excel():
 
 
 @bp.route('/panel/students/file_permission_error')
+@cache.cached(timeout=3600)
 @login_required
 def file_permission_error():
     """

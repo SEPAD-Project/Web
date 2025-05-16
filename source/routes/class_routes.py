@@ -7,6 +7,7 @@ from flask_login import current_user, login_required
 
 # Local Application Imports
 from source import db
+from source import cache
 from source.models.models import Student, Teacher, Class, School
 from source.utils.generate_class_code import generate_class_code
 from source.utils.excel_reading import add_classes
@@ -44,6 +45,7 @@ def panel_classes():
 
 
 @bp.route('/panel/classes/add_class', methods=['GET', 'POST'])
+@cache.cached(timeout=3600)
 @login_required
 def add_class():
     """
@@ -84,6 +86,7 @@ def add_class():
 
 
 @bp.route('/panel/classes/add_from_excel', methods=['GET', 'POST'])
+@cache.cached(timeout=3600)
 @login_required
 def add_from_excel():
     """
@@ -261,6 +264,7 @@ def class_info(class_name):
 
 
 @bp.route('/panel/classes/unknown_class_info')
+@cache.cached(timeout=3600)
 @login_required
 def unknown_class_info():
     """
@@ -273,6 +277,7 @@ def unknown_class_info():
 
 
 @bp.route('/panel/classes/duplicated_class_info')
+@cache.cached(timeout=3600)
 @login_required
 def duplicated_class_info():
     """
@@ -300,6 +305,7 @@ def error_in_excel():
 
 
 @bp.route('/panel/classes/file_permission_error')
+@cache.cached(timeout=3600)
 @login_required
 def file_permission_error():
     """

@@ -24,3 +24,6 @@ class Config:
 
     # Flask-Compress compression level (1-9)
     COMPRESS_LEVEL = 9
+
+    CACHE_TYPE = 'RedisCache'  
+    CACHE_REDIS_URL = "redis://localhost:6379/0" 

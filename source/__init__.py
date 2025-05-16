@@ -7,15 +7,16 @@ from flask_login import LoginManager
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from flask_compress import Compress
+from flask_caching import Cache
 
 # Internal Imports
 from source.config import Config
-from source.routes import main_routes
 
 # Initialize extensions
 db = SQLAlchemy()
 login_manager = LoginManager()
-
+compress = Compress()
+cache = Cache()
 
 def create_app():
     """
@@ -34,11 +35,12 @@ def create_app():
     # Initialize core extensions
     db.init_app(app)
     login_manager.init_app(app)
-    Compress(app)
+    compress.init_app(app)
+    cache.init_app(app)
 
     # Register blueprints
     from source.routes import (
-        auth_routes, school_routes,
+        main_routes, auth_routes, school_routes,
         class_routes, student_routes, teacher_routes, analytics_routes
     )
     app.register_blueprint(main_routes.bp)
@@ -56,7 +58,6 @@ def create_app():
 
     # Flask-Login user loader
     from source.models.models import School
-
     @login_manager.user_loader
     def load_user(user_id):
         return School.query.get(int(user_id))

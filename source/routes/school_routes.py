@@ -4,12 +4,14 @@ from flask_login import current_user, login_required
 
 # Local Application Imports
 from source.models.models import School
+from source import cache
 
 # Initialize the Blueprint for school-related routes
 bp = Blueprint('school_routes', __name__)
 
 
 @bp.route('/panel/home')
+@cache.cached(timeout=3600)
 @login_required
 def panel_home():
     """

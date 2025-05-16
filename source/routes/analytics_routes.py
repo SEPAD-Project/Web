@@ -25,6 +25,8 @@ from source.utils.analytics.GUI.analytics_GUI import (
 from source.models.models import School, Student, Class
 from source.server_side.Website.Email import analytics_sender
 
+from source import cache
+
 # Initialize the Blueprint for analytics-related routes
 bp = Blueprint('analytics_routes', __name__)
 
@@ -40,6 +42,7 @@ def get_school_email() -> str:
 
 
 @bp.route('/panel/analytics')
+@cache.cached(timeout=3600)
 @login_required
 def analytics_menu():
     """

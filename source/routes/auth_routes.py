@@ -8,6 +8,7 @@ from flask_login import login_user, current_user
 
 # Local Application Imports
 from source import db
+from source import cache
 from source.models.models import School
 from source.server_side.Website.directory_manager import dm_create_school
 from source.server_side.Website.Email.signup_verify import verify_code_sender
@@ -17,6 +18,7 @@ bp = Blueprint('auth_routes', __name__)
 
 
 @bp.route('/login', methods=['GET', 'POST'])
+@cache.cached(timeout=3600)
 def login():
     '''
     Handle the login process for school managers.
@@ -62,6 +64,7 @@ def login():
 
 
 @bp.route('/signup', methods=['GET', 'POST'])
+@cache.cached(timeout=3600)
 def signup():
     '''
     Handle the registration process for new schools.
@@ -104,6 +107,7 @@ def signup():
     return render_template('auth/signup.html')
 
 @bp.route('/verify_email', methods=['GET', 'POST'])
+@cache.cached(timeout=3600)
 def verify_email():
     if not 'tmp_school_data' in session:
         return redirect(url_for('auth_routes.signup'))
@@ -152,6 +156,7 @@ def verify_email():
 
 
 @bp.route('/notify_username_password')
+@cache.cached(timeout=3600)
 def notify_user():
     """
     Display a page that informs the user of their assigned username and password after registration.
@@ -167,6 +172,7 @@ def notify_user():
 
 
 @bp.route('/duplicated_school_info')
+@cache.cached(timeout=3600)
 def duplicated_school_info():
     """
     Show an error page when a duplicate school code or personal code is detected during signup.
@@ -182,6 +188,7 @@ def duplicated_school_info():
 
 
 @bp.route('/unknown_school_info')
+@cache.cached(timeout=3600)
 def unknown_school_info():
     """
     Display an error message when the provided school code does not exist

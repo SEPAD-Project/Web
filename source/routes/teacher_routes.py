@@ -4,6 +4,7 @@ from flask_login import current_user, login_required
 
 # Internal Imports
 from source import db
+from source import cache
 from source.models.models import Class, School, Teacher
 
 # Initialize the Blueprint for teacher-related routes
@@ -39,6 +40,7 @@ def panel_teachers():
 
 
 @bp.route('/panel/teachers/add_teacher', methods=['GET', 'POST'])
+@cache.cached(timeout=3600)
 @login_required
 def add_teacher():
     """
@@ -185,6 +187,7 @@ def teacher_info(teacher_national_code):
 
 
 @bp.route('/panel/teachers/wrong_teacher_info', methods=['GET', 'POST'])
+@cache.cached(timeout=3600)
 @login_required
 def wrong_teacher_info():
     """
